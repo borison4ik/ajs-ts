@@ -8,7 +8,7 @@ export default class Cart {
     add(item: Buyable): void {
         if(item instanceof Stackable) {
             // проверяем наличие и стакаем
-            const findItem = this._items.find(cartItem => cartItem.good.id === item.id);
+            const findItem = this.findItem(item.id);
             if(findItem) {
                 findItem.count += 1;
             } else {
@@ -33,7 +33,18 @@ export default class Cart {
         return this.total() * discount;
     }
 
+    findItem(id: number) : CartItem | undefined{
+        return this._items.find(cartItem => cartItem.good.id === id);
+    }
+
     delete(id: number): void {
-        this._items = [...this._items.filter(item => item.good.id !== id)];
+        const findItem = this.findItem(id);
+        if(findItem) {
+            if(findItem.count > 1) {
+                findItem.count = findItem.count - 1;
+            } else {
+                this._items = this._items.filter(cartItem => cartItem.good.id !== id);
+            }
+        }
     }
 }

@@ -65,7 +65,7 @@ describe('Cart', () => {
     expect(cart.discountTotal(0.5)).toBe(500);
   });
 
-  test('add function should delete cartItem from Cart', () => {
+  test('should delete cartItem from Cart', () => {
     const cart = new Cart();
     cart.add(new Book(1001, 'War and Piece', 'Leo Tolstoy', 1000, 1225));
     cart.add(new Smartphone(333, 'Iphone', 50000, '5s'));
@@ -83,5 +83,31 @@ describe('Cart', () => {
     }];
 
     expect(cart.items).toEqual(caseItems);
+  });
+
+  test('should delete one cartItem from Cart', () => {
+    const cart = new Cart();
+    cart.add(new Smartphone(333, 'Iphone', 50000, '5s'));
+    cart.add(new Smartphone(333, 'Iphone', 50000, '5s'));
+    cart.add(new Smartphone(333, 'Iphone', 50000, '5s'));
+    cart.delete(333);
+
+    const caseItems = [
+    {
+      good: {
+          "id": 333,
+          "name": "Iphone",
+          "price": 50000,
+          "model": "5s"
+      },
+      count: 2
+    }];
+
+    expect(cart.items).toEqual(caseItems);
+  });
+
+  test('should return undefined', () => {
+    const cart = new Cart();
+    expect(cart.delete(333)).toBeUndefined();
   });
 });
